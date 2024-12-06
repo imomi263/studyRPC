@@ -14,7 +14,6 @@ public class ServiceInfo implements Serializable {
     private String serviceName;
     // 版本
     private String version;
-
     // 地址
     private String address;
 

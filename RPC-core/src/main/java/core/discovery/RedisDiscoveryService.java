@@ -1,8 +1,8 @@
 package core.discovery;
 
+import com.alibaba.fastjson2.JSONObject;
 import core.balance.LoadBalance;
 import core.balance.RandomBalance;
-import com.alibaba.fastjson.JSONObject;
 import core.common.ServiceInfo;
 import io.netty.util.internal.StringUtil;
 import org.springframework.util.CollectionUtils;
@@ -48,8 +48,11 @@ public class RedisDiscoveryService implements DiscoveryService {
         if(!StringUtil.isNullOrEmpty(password)){
             jedis.auth(password);
         }
-        List<String> serviceInfoJsons=jedis.hvals(BASE_KEY+serviceName);
 
+        // jedis.set("key","value"); 放入值
+
+        List<String> serviceInfoJsons=jedis.hvals(BASE_KEY+serviceName);
+        // Redis里面存了服务的名称，从redis中取出来返回一个服务
         List<ServiceInfo> res=serviceInfoJsons.stream()
                 // 调用静态方法把字符串转换成JSONObject对象
                 .map(JSONObject::parseObject)
