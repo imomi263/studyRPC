@@ -74,8 +74,8 @@ public class RpcClientAutoConfiguration {
     // 当前的bean定义才会生效。
     @ConditionalOnBean({RpcClientProperties.class,LoadBalance.class})
     public DiscoveryService discoveryService(@Autowired RpcClientProperties properties
-                            ,@Autowired LoadBalance loadBalance ){
-        return new RedisDiscoveryService(8099,"address","password",1,loadBalance);
+                                    ,@Autowired LoadBalance loadBalance ){
+        return new RedisDiscoveryService(6379,"localhost",null,1,loadBalance);
 
     }
 

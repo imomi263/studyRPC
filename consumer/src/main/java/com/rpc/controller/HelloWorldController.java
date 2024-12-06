@@ -17,7 +17,7 @@ public class HelloWorldController {
 
     @GetMapping("/hello/world")
     public ResponseEntity<String> pullServiceInfo(@RequestParam("name") String name){
-
+        System.out.println(name);
         System.out.println("计算结果为"+helloWorldService.sum(10,20));
 
         return  ResponseEntity.ok(helloWorldService.sayHello(name));

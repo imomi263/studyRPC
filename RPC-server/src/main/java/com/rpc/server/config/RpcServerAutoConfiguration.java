@@ -5,6 +5,7 @@ import com.rpc.core.register.RegistryService;
 import com.rpc.server.RpcServerProvider;
 import com.rpc.server.transport.NettyRpcServer;
 import com.rpc.server.transport.RpcServer;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -16,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(RpcServerProperties.class)
 public class RpcServerAutoConfiguration {
 
-    @Autowired
+    @Resource
     private RpcServerProperties properties;
 
     @Bean
@@ -24,7 +25,7 @@ public class RpcServerAutoConfiguration {
     public RegistryService registryService() {
 
        // return new ZookeeperRegistryService(properties.getRegistryAddr());
-        return new RedisRegistryService(8099,"110.41.139.215","p@ssw0rd",1);
+        return new RedisRegistryService(6379,"localhost",null,1);
     }
 
     @Bean

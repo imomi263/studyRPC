@@ -23,7 +23,7 @@ public class NettyRpcServer implements RpcServer {
 
     @Override
     public void start(int port) {
-        System.out.println("服务端启动了");
+        log.info("服务端启动了");
         EventLoopGroup boss=new NioEventLoopGroup(1);
         EventLoopGroup work=new NioEventLoopGroup(4);
 

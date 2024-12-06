@@ -41,6 +41,7 @@ public class ClientStubInvocationHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         // 1、获得服务信息
         ServiceInfo serviceInfo = discoveryService.discovery(ServiceUtil.serviceKey(this.calzz.getName(), this.version));
+
         if (serviceInfo == null) {
             throw new ResourceNotFoundException("404");
         }

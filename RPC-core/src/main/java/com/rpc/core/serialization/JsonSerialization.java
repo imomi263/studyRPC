@@ -22,8 +22,10 @@ package com.rpc.core.serialization;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thoughtworks.xstream.core.util.Fields;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
@@ -40,6 +42,7 @@ public class JsonSerialization implements RpcSerialization {
         ObjectMapper mapper = new ObjectMapper();
 
         mapper.setSerializationInclusion(include);
+
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.configure(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS, true);
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
@@ -50,7 +53,26 @@ public class JsonSerialization implements RpcSerialization {
 
     @Override
     public <T> byte[] serialize(T obj) throws IOException {
-        return obj instanceof String ? ((String )obj).getBytes() : MAPPER.writeValueAsBytes(obj.toString());
+        StringBuilder strBuilder = new StringBuilder();
+        Field[] fields=obj.getClass().getFields();
+        for(Field field:fields){
+            field.setAccessible(true);
+            Class<?> type = field.getType();
+            if (type.isArray()) {
+                try{
+                    Object o=field.get(obj);
+                    //Class<?> clz=o.getClass().getComponentType();
+                    strBuilder.append(Arrays.toString((Object[])o));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            } else {
+                strBuilder.append(field);
+            }
+
+        }
+        return obj instanceof String ? ((String )obj).getBytes() : strBuilder.toString().getBytes();
 
     }
 
@@ -58,4 +80,5 @@ public class JsonSerialization implements RpcSerialization {
     public <T> T deserialize(byte[] data, Class<T> clazz) throws IOException {
         return MAPPER.readValue(Arrays.toString(data), clazz);
     }
+
 }

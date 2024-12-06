@@ -5,18 +5,20 @@ import com.rpc.core.balance.LoadBalance;
 import com.rpc.core.balance.RandomBalance;
 import com.rpc.core.common.ServiceInfo;
 import io.netty.util.internal.StringUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 import redis.clients.jedis.Jedis;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class RedisDiscoveryService implements DiscoveryService {
 
     private final String BASE_KEY="rpc";
     private int port=6379;
-    private String address="127.0.0.1";
-    private String password="";
+    private String address="localhost";
+    private String password=null;
     private int dbs=1;
     private LoadBalance loadBalance;
 
@@ -46,7 +48,9 @@ public class RedisDiscoveryService implements DiscoveryService {
 
         Jedis jedis=new Jedis(address,port);
         if(!StringUtil.isNullOrEmpty(password)){
-            jedis.auth(password);
+
+            String tmp=jedis.auth(password);
+            log.info("RedisDiscoveryService 验证密码"+tmp);
         }
 
         // jedis.set("key","value"); 放入值

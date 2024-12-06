@@ -16,6 +16,7 @@ import java.net.InetAddress;
 
 @Slf4j
 public class RpcServerProvider implements BeanPostProcessor, CommandLineRunner {
+
     private RegistryService registryService;
 
     private RpcServerProperties properties;
@@ -38,7 +39,7 @@ public class RpcServerProvider implements BeanPostProcessor, CommandLineRunner {
     @Override
     public void run(String... args){
         rpcServer.start(properties.getPort());
-        log.info(" zxRpc server :{} start, appName :{} , port :{}", rpcServer, properties.getAppName(), properties.getPort());
+        log.info(" Rpc server :{} start, appName :{} , port :{}", rpcServer, properties.getAppName(), properties.getPort());
         //注册服务关闭钩子 服务关闭同时 关闭rpc服务
         Runtime.getRuntime().addShutdownHook(new Thread(()->{
             try {
@@ -83,6 +84,7 @@ public class RpcServerProvider implements BeanPostProcessor, CommandLineRunner {
      */
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        //log.info("RpcServerProvider postProcessAfterInitialization");
         // 获取bean上的自定义注解 @RpcService
         RpcService rpcService = bean.getClass().getAnnotation(RpcService.class);
 
