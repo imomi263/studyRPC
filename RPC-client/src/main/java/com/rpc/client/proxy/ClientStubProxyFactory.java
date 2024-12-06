@@ -21,9 +21,12 @@ public class ClientStubProxyFactory {
         // 这个方法使用computeIfAbsent方法从缓存objectCache中获取或创建代理对象。
         // 如果缓存中不存在，则使用Proxy.newProxyInstance方法创建一个新的代理实例。
 
+        // 这里computeIfAbsent接受tClass作为第一个参数，然后把它传入lambda函数作为参数，clz是形参
         return (T) objectCache.computeIfAbsent(tClass, clz -> Proxy.newProxyInstance(clz.getClassLoader(),
                 // 这是Proxy.newProxyInstance方法的第二个参数，它是一个类数组，指定了代理对象需要实现的接口
-                new Class[]{clz},
+
+                // clz 代表的是一个类的 Class 类型的引用，它指向一个特定的接口或类。
+                new Class<?>[]{clz},
 
                 // 这是Proxy.newProxyInstance方法的第三个参数，它是一个InvocationHandler，
                 // 用于处理对代理对象方法的调用。这里使用的是ClientStubInvocationHandler，

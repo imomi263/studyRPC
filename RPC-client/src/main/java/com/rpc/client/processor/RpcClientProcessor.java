@@ -61,13 +61,18 @@ public class RpcClientProcessor implements BeanFactoryPostProcessor, Application
                     // 检查字段是否有RpcAutowired注解。
                     RpcAutowired rpcAutowired = AnnotationUtils.getAnnotation(field, RpcAutowired.class);
                     if(rpcAutowired != null) {
-                        //log.info("beanClassName        "+ rpcAutowired.toString());
+
+
+                        // clazz : com.rpc.controller.HelloWorldController
+
                         // 从Spring应用上下文中获取当前类的bean实例。
                         Object bean=applicationContext.getBean(clazz);
                         // 设置字段的访问权限，以便可以访问私有字段
                         field.setAccessible(true);
                         // 使用ReflectionUtils的setField方法将RPC服务客户端代理设置到字段中。
                         ReflectionUtils.setField(field,bean,clientStubProxyFactory.getProxy(
+                                // field.type : 服务的那个接口
+
                                 field.getType(),rpcAutowired.version(),discoveryService,rpcClientProperties
                         ));
                     }

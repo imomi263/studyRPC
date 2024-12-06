@@ -39,6 +39,8 @@ public class ClientStubInvocationHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        // 这个函数代理把参数发给远程服务器然后返回response
+
         // 1、获得服务信息
         ServiceInfo serviceInfo = discoveryService.discovery(ServiceUtil.serviceKey(this.calzz.getName(), this.version));
 

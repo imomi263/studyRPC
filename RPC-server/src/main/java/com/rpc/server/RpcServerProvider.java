@@ -85,6 +85,7 @@ public class RpcServerProvider implements BeanPostProcessor, CommandLineRunner {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         //log.info("RpcServerProvider postProcessAfterInitialization");
+
         // 获取bean上的自定义注解 @RpcService
         RpcService rpcService = bean.getClass().getAnnotation(RpcService.class);
 
